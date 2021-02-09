@@ -40,4 +40,5 @@ public class Main {
         String json = "{\"country\":\"Japan\",\"city\":\"Tokyo\",\"monument\":\"Tokyo Tower\"}";
         System.out.println(server.insertNewMonument(json, url, username, password));
     }
+
 }
