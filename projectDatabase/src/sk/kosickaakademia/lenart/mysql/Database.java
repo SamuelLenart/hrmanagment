@@ -13,10 +13,11 @@ import java.util.List;
 
 import static sk.kosickaakademia.lenart.mysql.Helper.Help.*;
 
+
 public class Database {
-    private String url = "jdbc:mysql://localhost:3306/world_x";
-    private String username = "root";
-    private String password = "";
+    private static String url = "jdbc:mysql://localhost:3306/world_x";
+    private static String username = "root";
+    private static String password = "";
 
     public List<City> getCities(String country) {
         String query = "SELECT city.Name, JSON_EXTRACT(Info, '$.Population') AS Population " +
@@ -49,7 +50,7 @@ public class Database {
         return cities;
     }
 
-    private Connection getConnection() throws ClassNotFoundException, SQLException {
+    private static Connection getConnection() throws ClassNotFoundException, SQLException {
         Class.forName("com.mysql.cj.jdbc.Driver");
         Connection con = DriverManager.getConnection(url, username, password);
         return con;
@@ -272,7 +273,7 @@ public class Database {
             System.out.println("Incorrect name!");
             return false;
         }
-        if (!isCityInCountryCode(city, code3)){
+        if (!isCityInCountry(city, code3)){
             System.out.println("Wrong country or city!");
             return false;
         }
@@ -280,18 +281,19 @@ public class Database {
             Connection connection = getConnection();
             if (connection != null) {
                 PreparedStatement ps = connection.prepareStatement(query);
-                int monumentId = getMonumentId() + 1;
-                ps.setInt(1, monumentId);
-                ps.setString(2, name);
-                ps.setInt(3, getCityId(city));
+                ps.setString(1, name);
+                ps.setInt(2, getCityId(city, url, username, password));
                 ps.executeUpdate();
-                System.out.println("Added " + monumentId + ". " + name + " in " + city + " with ID: " + getCityId(city));
+                System.out.println("Added " + name + " to " + city + " with ID: " + getCityId(city, url, username, password));
+                connection.close();
             }
         } catch (Exception e) { e.printStackTrace(); }
 
         return true;
     }
-    public List<Monument> getMonuments() {
+
+
+    public static List<Monument> getMonuments() {
 
         List<Monument> monuments = new ArrayList<>();
         try {
