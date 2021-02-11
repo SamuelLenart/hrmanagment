@@ -32,7 +32,7 @@ public class Database {
         }
     }
 
-    public Object insertNewUser(String login, String password) {
+    public boolean insertNewUser(String login, String password) {
         if (login == null || login.equals("") || password == null || password.length() < 6) {
             return false;
             String hashPassword = new Util().getMd5(password);
