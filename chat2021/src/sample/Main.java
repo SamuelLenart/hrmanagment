@@ -1,12 +1,14 @@
 package sample;
 
-import mysql.User.Account;
 
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+
+import sk.kosickaakademia.lenart.chat.Database;
+
 
 public class Main extends Application {
 
@@ -18,11 +20,10 @@ public class Main extends Application {
         primaryStage.show();
     }
 
-
     public static void main(String[] args) {
-        Database dat = new Database();
-        String name = "lenarts";
-        String pass = TopSecretData.getChatPass();
-        dat.changePassword(name, "samuel", pass, pass);
+
+        Database database = new Database();
+        database.insertNewUser("Alexander","Visma2021");
+        database.loginUser("Alexander","Visma2021");
     }
 }
