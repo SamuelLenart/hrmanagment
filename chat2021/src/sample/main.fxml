@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <Label layoutX="14.0" layoutY="25.0" text="Logged user:" />
+      <Label layoutX="87.0" layoutY="25.0" text="Name" textFill="#ed0404" />
+      <Button layoutX="21.0" layoutY="551.0" mnemonicParsing="false" text="Logout" />
+   </children>
+</Pane>

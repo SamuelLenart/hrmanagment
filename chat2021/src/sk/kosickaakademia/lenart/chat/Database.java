@@ -142,7 +142,7 @@ public class Database {
     public void deleteAllMyMessages(String login){
     }
 
-    public User loginUser(java.lang.String login, java.lang.String password) {
+    public User loginUser(String login, String password) {
         return null;
     }
 }

@@ -2,12 +2,16 @@ package sample;
 
 
 import javafx.event.ActionEvent;
-import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.control.PasswordField;
 
+import javafx.stage.Stage;
 import sk.kosickaakademia.lenart.chat.Database;
 import sk.kosickaakademia.lenart.entity.User;
 
@@ -29,7 +33,21 @@ public class Controller {
                 lbl_error.setVisible(true);
             }else {
                 System.out.println("You're logged!");
+                openMainForm(user);
             }
+        }
+    }
+
+    private void openMainForm(User user){
+        try {
+            Parent root = FXMLLoader.load(getClass().getResource("main.fxml"));
+            Stage stage = new Stage();
+            stage.setTitle("New stage Title");
+            stage.setScene(new Scene(root, 800, 600));
+            stage.show();
+            btn_login.getScene().getWindow().hide();
+        }catch (Exception e){
+            e.printStackTrace();
         }
     }
 }

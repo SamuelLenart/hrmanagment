@@ -22,9 +22,9 @@ public class Main extends Application {
 
     public static void main(String[] args) {
         launch(args);
-        new Database().test();
+        //new Database().test();
         Database database = new Database();
-        //database.insertNewUser("Samuel","Visma2021");
+        database.insertNewUser("Samuel","Visma2021");
         //database.loginUser("Samuel", "Visma2021");
     }
 }
