@@ -1,5 +1,6 @@
 package sk.kosickaakademia.lenart.chat;
 
+import sk.kosickaakademia.lenart.chat.Util;
 import sk.kosickaakademia.lenart.entity.Message;
 import sk.kosickaakademia.lenart.entity.User;
 
@@ -11,7 +12,7 @@ public class Database {
     private String username = "mysqluser";
     private String password = "Kosice2021!";
     private final String insertNewUser = "INSERT INTO user (login, password) VALUES (?,?)";
-    private final String loginToUser = "Select * FROM user WHERE login LIKE ? and password LIKE ?";
+    private final String loginUser = "Select * FROM user WHERE login LIKE ? and password LIKE ?";
     private final String newMessage = "INSERT INTO message( frto, to, text) VALUES (?,?,?)";
 
     private Connection getConnection() throws ClassNotFoundException, SQLException {
@@ -61,7 +62,7 @@ public class Database {
         return true;
     }
 
-    public User loginUser(String login, String password, java.lang.String loginUser) {
+    public User loginUser(String login, String password) {
         if (login==null || login.equals("") || password==null || password.length() < 6)
             return null;
 
@@ -142,9 +143,6 @@ public class Database {
     public void deleteAllMyMessages(String login){
     }
 
-    public User loginUser(String login, String password) {
-        return null;
-    }
 }
 
 

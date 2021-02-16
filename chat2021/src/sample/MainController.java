@@ -3,7 +3,8 @@ package sample;
 import sk.kosickaakademia.lenart.entity.User;
 
 import java.awt.*;
-import java.awt.event.MouseEvent;
+import javafx.scene.input.MouseEvent;
+import javafx.scene.control.Label;
 
 public class MainController {
     public Label lbl_login;
@@ -13,9 +14,14 @@ public class MainController {
         System.out.println("Constructor");
     }
 
-    public void logout(MouseEvent mouseEvent){
+    public void logout(MouseEvent mouseEvent) {
     }
+
     public void setUser(User user){
-        this.user = user;
+        this.user=user;
+    }
+
+    public void initLoginName() {
+        lbl_login.setText(user.getLogin());
     }
 }

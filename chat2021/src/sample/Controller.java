@@ -2,6 +2,7 @@ package sample;
 
 
 import javafx.event.ActionEvent;
+import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
@@ -17,7 +18,8 @@ import sk.kosickaakademia.lenart.entity.User;
 
 public class Controller {
 
-    public TextField txt_login;
+    @FXML
+    private TextField txt_login;
     public PasswordField txt_password;
     public Label lbl_error;
     public Button btn_login;
@@ -40,11 +42,15 @@ public class Controller {
 
     private void openMainForm(User user){
         try {
-            Parent root = FXMLLoader.load(getClass().getResource("main.fxml"));
+            FXMLLoader root = new FXMLLoader();
+            root.setLocation(getClass().getResource("main.fxml"));
             Stage stage = new Stage();
-            stage.setTitle("New stage Title");
-            stage.setScene(new Scene(root, 800, 600));
+            stage.setTitle("My chat 2021 application");
+            stage.setScene(new Scene(root.load(), 800, 600));
             stage.show();
+            MainController mc= root.getController();
+            mc.setUser(user);
+            mc.initLoginName();
             btn_login.getScene().getWindow().hide();
         }catch (Exception e){
             e.printStackTrace();
