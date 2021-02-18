@@ -5,13 +5,16 @@ import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.AnchorPane;
 import sk.kosickaakademia.lenart.chat.Database;
 import sk.kosickaakademia.lenart.entity.Message;
 import sk.kosickaakademia.lenart.entity.User;
+import javafx.stage.Stage;
 import java.util.Date;
 import java.util.List;
 
 public class MainController {
+    private AnchorPane scenePane;
     public Label lbl_login;
     private User user;
     public TextField txt_sender;
@@ -22,7 +25,7 @@ public class MainController {
         System.out.println("Constructor");
     }
 
-    public void logout(MouseEvent mouseEvent) {
+    public void logout(ActionEvent actionEvent) {
     }
 
     public void setUser(User user){

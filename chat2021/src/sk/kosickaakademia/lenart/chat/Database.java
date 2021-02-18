@@ -14,7 +14,7 @@ public class Database {
     private String password = "Kosice2021!";
     private final String insertNewUser = "INSERT INTO user (login, password) VALUES (?,?)";
     private final String loginUser = "Select * FROM user WHERE login LIKE ? and password LIKE ?";
-    private final String newMessage = "INSERT INTO message( frto, to, text) VALUES (?,?,?)";
+    private final String newMessage = "INSERT INTO message( fromUser, toUser, text) VALUES (?,?,?)";
     private final String getId = "SELECT id FROM user WHERE login LIKE ?";
     private final String delMessages = "DELETE FROM message WHERE toUser = ?";
     private final String getMessages = "SELECT * FROM message  " +
