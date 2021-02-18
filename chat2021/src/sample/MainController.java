@@ -25,7 +25,7 @@ public class MainController {
         System.out.println("Constructor");
     }
 
-    public void logout(ActionEvent actionEvent) {
+    public void logout(MouseEvent mouseEvent) {
     }
 
     public void setUser(User user){

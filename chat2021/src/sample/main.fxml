@@ -2,26 +2,28 @@
 
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
+<?import javafx.scene.shape.*?>
 <?import javafx.scene.text.*?>
 
 <Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.MainController">
    <children>
-      <Label layoutX="33.0" layoutY="18.0" prefHeight="25.0" prefWidth="83.0" text="WELCOME">
+      <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#010101b0" height="600.0" stroke="BLACK" strokeType="INSIDE" width="800.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" />
+      <Label layoutX="33.0" layoutY="18.0" prefHeight="25.0" prefWidth="83.0" text="WELCOME" textFill="WHITE">
          <font>
             <Font size="16.0" />
          </font>
       </Label>
-      <Label fx:id="lbl_login" layoutX="116.0" layoutY="14.0" prefHeight="32.0" prefWidth="171.0" text="Login" textFill="#e10003">
+      <Label fx:id="lbl_login" layoutX="116.0" layoutY="14.0" prefHeight="32.0" prefWidth="171.0" text="Login" textFill="#23e000">
          <font>
             <Font size="22.0" />
          </font>
       </Label>
-      <Label layoutX="699.0" layoutY="542.0" onDragDetected="#logout" onMouseClicked="#logout" text="logout" underline="true">
+      <Label layoutX="699.0" layoutY="542.0" onDragDetected="#logout" onMouseClicked="#logout" text="logout" textFill="RED">
          <font>
             <Font size="24.0" />
          </font>
       </Label>
-      <Label layoutX="33.0" layoutY="102.0" prefHeight="25.0" prefWidth="105.0" text="Send message to:">
+      <Label layoutX="33.0" layoutY="102.0" prefHeight="25.0" prefWidth="105.0" text="Send message to:" textFill="WHITE">
          <font>
             <Font size="13.0" />
          </font>
@@ -36,12 +38,12 @@
             <Font size="14.0" />
          </font>
       </TextField>
-      <Button ellipsisString="20" layoutX="702.0" layoutY="138.0" mnemonicParsing="false" onAction="#click_send" text="Send" textFill="#214316">
+      <Button ellipsisString="20" layoutX="702.0" layoutY="138.0" mnemonicParsing="false" onAction="#click_send" text="Send" textFill="#214316" underline="true">
          <font>
             <Font size="18.0" />
          </font>
       </Button>
-      <Label layoutX="33.0" layoutY="193.0" prefHeight="25.0" prefWidth="105.0" text="Message:">
+      <Label layoutX="33.0" layoutY="193.0" prefHeight="25.0" prefWidth="105.0" text="Messages:" textFill="WHITE">
          <font>
             <Font size="16.0" />
          </font>
@@ -52,7 +54,7 @@
             <Font size="18.0" />
          </font>
       </Button>
-      <Label layoutX="33.0" layoutY="147.0" text="Subject:">
+      <Label layoutX="33.0" layoutY="147.0" text="Subject:" textFill="WHITE">
          <font>
             <Font size="15.0" />
          </font>
