@@ -26,7 +26,7 @@ public class Database {
             } else {
                 System.out.println("Connection failed");
             }
-        }catch (IOException exception){
+        }catch (IOException | SQLException exception){
             exception.printStackTrace();
         }return null;
     }
@@ -37,6 +37,10 @@ public class Database {
                 System.out.println("Goodbye");
                 connection.close();
             }
+        } catch (SQLException ex) {
+            System.out.println("No database for closing connection / not connected before");
+            ex.printStackTrace();
         }
+        return null;
     }
 }
