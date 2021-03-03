@@ -1,6 +1,7 @@
 package sk.kosickaakademia.lenart.company.MySQL;
 
 import sk.kosickaakademia.lenart.company.entity.User;
+import sk.kosickaakademia.lenart.company.enumerator.Gender;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -59,10 +60,10 @@ public class Database {
                 ps.setString(2, user.getlName());
                 ps.setInt(3, user.getAge());
                 ps.setInt(4, user.getGender().getValue());
-                int result = ps.executeUpdate();
-                closeConnection(connection);
-                return result == 1;
+                int queryAffected = ps.executeUpdate();
+                return queryAffected == 1;
             } catch (SQLException exception) {
+                throwable.printStackTrace();
             }
         }
         return false;
