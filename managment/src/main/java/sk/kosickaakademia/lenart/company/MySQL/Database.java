@@ -68,37 +68,17 @@ public class Database {
         return false;
     }
 
-    public List<User> getFemales() {
-        String sql = "SELECT * FROM user WHERE gender = 1";
-        try {
-            PreparedStatement ps = getConnection().prepareStatement(sql);
-            return executeSelect(ps);
-        } catch (Exception ex) {
-        }
-        return null;
-    }
-
-    public List<User> getMales() {
-        String sql = "SELECT * FROM user WHERE gender = 0";
-        try {
-            PreparedStatement ps = getConnection().prepareStatement(sql);
-            return executeSelect(ps);
-        }catch(Exception ex) {
-        }
-        return null;
-    }
-
     public List<User> getUsersByAge(int from, int to) {
-        if(from > to) {
+        if (from > to) {
             System.out.println("Wrong ");
             return null;
         } else {
-            try(Connection connection = getConnection()) {
-                String AGERANGESELECTIONQUERY = "select * from user where age between ? and ?";
-                PreparedStatement preparedStatement = connection.prepareStatement(AGERANGESELECTIONQUERY);
-                preparedStatement.setInt(1, from);
-                preparedStatement.setInt(2, to);
-                executeSelect(preparedStatement);
+            try (Connection connection = getConnection()) {
+                String usersbyage = "select * from user where age between ? and ?";
+                PreparedStatement ps2 = connection.prepareStatement(usersbyage);
+                ps2.setInt(1, from);
+                ps2.setInt(2, to);
+                executeSelect(ps2);
             } catch (SQLException ex) {
                 ex.printStackTrace();
             }
@@ -106,13 +86,13 @@ public class Database {
         return null;
     }
 
-    private List<User> executeSelect(PreparedStatement preparedStatement) {
+    private List<User> executeSelect(PreparedStatement ps3) {
         List<User> userList = new ArrayList<>();
         int results = 0;
         try {
-            ResultSet resultSet = preparedStatement.executeQuery();
-            if(resultSet != null) {
-                while(resultSet.next()) {
+            ResultSet resultSet = ps3.executeQuery();
+            if (resultSet != null) {
+                while (resultSet.next()) {
                     results++;
                     int id = resultSet.getInt("id");
                     String fName = resultSet.getString("fName");
@@ -129,21 +109,115 @@ public class Database {
         } catch (SQLException ex) {
             ex.printStackTrace();
         }
-        if(userList.size() != 0) {
+        if (userList.size() != 0) {
             return userList;
         } else {
             System.out.println("No users found");
             return null;
         }
     }
-    public PreparedStatement selectByGender(int gender) {
-        if(gender >= 0){
-            try(Connection connection = getConnection()) {
-                String SELECTBYGENDERQUERY = "select * from user where gender = ?";
-                PreparedStatement preparedStatement = connection.prepareStatement(SELECTBYGENDERQUERY);
+
+    public List<User> selectByGender(int gender) {
+        if (gender >= 0) {
+            try (Connection connection = getConnection()) {
+                String selectbygender = "select * from user where gender = ?";
+                PreparedStatement preparedStatement = connection.prepareStatement(selectbygender);
                 preparedStatement.setInt(1, gender);
-                executeSelect(preparedStatement);
-            }catch (SQLException ex) {
+                return executeSelect(preparedStatement);
+            } catch (SQLException ex) {
+                ex.printStackTrace();
+            }
+        }
+        return null;
+    }
+
+    public List<User> selectRangeBasedOnUserAge(int from, int to) {
+        if (from > to) {
+            System.out.println("Input should be ascending");
+            return null;
+        } else {
+            try (Connection connection = getConnection()) {
+                String agerangebased = "select * from user where age between ? and ?";
+                PreparedStatement preparedStatement = connection.prepareStatement(agerangebased);
+                preparedStatement.setInt(1, from);
+                preparedStatement.setInt(2, to);
+                return executeSelect(preparedStatement);
+            } catch (SQLException ex) {
+                ex.printStackTrace();
+            }
+        }
+        return null;
+    }
+
+    public User getUserById(int id) {
+        String userbyid = "select * from user where id = ?";
+        try (Connection connection = getConnection()) {
+            PreparedStatement preparedStatement = connection.prepareStatement(userbyid);
+            preparedStatement.setInt(1, id);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            if (resultSet.next()) {
+                String fname = resultSet.getString("fname");
+                String lname = resultSet.getString("lname");
+                int age = resultSet.getInt("age");
+                int gender = resultSet.getInt("gender");
+                User user = new User(id, fname, lname, age, gender);
+                user.toString();
+                return user;
+            } else {
+                System.out.println("User not found");
+                return null;
+            }
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+        return null;
+    }
+
+    public List<User> getAllUsers() {
+        String allusers = "select * from user";
+        try (Connection connection = getConnection()) {
+            PreparedStatement preparedStatement = connection.prepareStatement(allusers);
+            return executeSelect(preparedStatement);
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+        return null;
+    }
+
+    public boolean changeUserAge(int id, int newAge) {
+        String changeuserage = "update user set age = ? where id = ?";
+        if (id > 0 && (!(newAge > 99) && !(newAge < 1))) {
+            try (Connection connection = getConnection()) {
+                PreparedStatement preparedStatement = connection.prepareStatement(changeuserage);
+                preparedStatement.setInt(1, newAge);
+                preparedStatement.setInt(2, id);
+                int queriesAffected = preparedStatement.executeUpdate();
+                return queriesAffected == 1;
+            } catch (SQLException ex) {
+                ex.printStackTrace();
+            }
+        } else {
+            System.out.println("Wrong parameters");
+            System.out.println("ID can't be less than zero");
+            System.out.println("Age must be between 1 and 99");
+            return false;
+        }
+        return false;
+    }
+
+    public List<User> getUsersByPattern(String pattern) {
+        String getusersbypattern = "select * from user where fname like ? or lname like ?";
+        String formatedPattern = "%" + pattern + "%";
+        if (pattern.equals("")) {
+            System.out.println("Pattern required");
+            return null;
+        } else {
+            try (Connection connection = getConnection()) {
+                PreparedStatement preparedStatement = connection.prepareStatement(getusersbypattern);
+                preparedStatement.setString(1, formatedPattern);
+                preparedStatement.setString(2, formatedPattern);
+                return executeSelect(preparedStatement);
+            } catch (SQLException ex) {
                 ex.printStackTrace();
             }
         }
