@@ -5,10 +5,9 @@ import sk.kosickaakademia.lenart.company.enumerator.Gender;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
+import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Properties;
 
 public class Database {
@@ -62,10 +61,92 @@ public class Database {
                 ps.setInt(4, user.getGender().getValue());
                 int queryAffected = ps.executeUpdate();
                 return queryAffected == 1;
-            } catch (SQLException exception) {
-                throwable.printStackTrace();
+            } catch (SQLException throwables) {
+                throwables.printStackTrace();
             }
         }
         return false;
+    }
+
+    public List<User> getFemales() {
+        String sql = "SELECT * FROM user WHERE gender = 1";
+        try {
+            PreparedStatement ps = getConnection().prepareStatement(sql);
+            return executeSelect(ps);
+        } catch (Exception ex) {
+        }
+        return null;
+    }
+
+    public List<User> getMales() {
+        String sql = "SELECT * FROM user WHERE gender = 0";
+        try {
+            PreparedStatement ps = getConnection().prepareStatement(sql);
+            return executeSelect(ps);
+        }catch(Exception ex) {
+        }
+        return null;
+    }
+
+    public List<User> getUsersByAge(int from, int to) {
+        if(from > to) {
+            System.out.println("Wrong ");
+            return null;
+        } else {
+            try(Connection connection = getConnection()) {
+                String AGERANGESELECTIONQUERY = "select * from user where age between ? and ?";
+                PreparedStatement preparedStatement = connection.prepareStatement(AGERANGESELECTIONQUERY);
+                preparedStatement.setInt(1, from);
+                preparedStatement.setInt(2, to);
+                executeSelect(preparedStatement);
+            } catch (SQLException ex) {
+                ex.printStackTrace();
+            }
+        }
+        return null;
+    }
+
+    private List<User> executeSelect(PreparedStatement preparedStatement) {
+        List<User> userList = new ArrayList<>();
+        int results = 0;
+        try {
+            ResultSet resultSet = preparedStatement.executeQuery();
+            if(resultSet != null) {
+                while(resultSet.next()) {
+                    results++;
+                    int id = resultSet.getInt("id");
+                    String fName = resultSet.getString("fName");
+                    String lName = resultSet.getString("lName");
+                    int age = resultSet.getInt("age");
+                    int gender = resultSet.getInt("gender");
+                    userList.add(new User(id, fName, lName, age, gender));
+                    System.out.println(id + " " + fName + " " + lName + " " + age + " " + gender);
+                }
+            } else {
+                System.out.println("No users found");
+                return null;
+            }
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+        if(userList.size() != 0) {
+            return userList;
+        } else {
+            System.out.println("No users found");
+            return null;
+        }
+    }
+    public PreparedStatement selectByGender(int gender) {
+        if(gender >= 0){
+            try(Connection connection = getConnection()) {
+                String SELECTBYGENDERQUERY = "select * from user where gender = ?";
+                PreparedStatement preparedStatement = connection.prepareStatement(SELECTBYGENDERQUERY);
+                preparedStatement.setInt(1, gender);
+                executeSelect(preparedStatement);
+            }catch (SQLException ex) {
+                ex.printStackTrace();
+            }
+        }
+        return null;
     }
 }

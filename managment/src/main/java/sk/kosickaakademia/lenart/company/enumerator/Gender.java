@@ -1,5 +1,10 @@
 package sk.kosickaakademia.lenart.company.enumerator;
 
+import org.graalvm.compiler.lir.LIRInstruction;
+import sk.kosickaakademia.lenart.company.entity.User;
+
+import java.util.List;
+
 public enum Gender {
     MALE(0), FEMALE(1), OTHER(2);
 
