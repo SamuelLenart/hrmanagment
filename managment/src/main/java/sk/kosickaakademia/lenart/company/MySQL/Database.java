@@ -156,8 +156,8 @@ public class Database {
             preparedStatement.setInt(1, id);
             ResultSet resultSet = preparedStatement.executeQuery();
             if (resultSet.next()) {
-                String fname = resultSet.getString("fname");
-                String lname = resultSet.getString("lname");
+                String fname = resultSet.getString("fName");
+                String lname = resultSet.getString("lName");
                 int age = resultSet.getInt("age");
                 int gender = resultSet.getInt("gender");
                 User user = new User(id, fname, lname, age, gender);
@@ -206,7 +206,7 @@ public class Database {
     }
 
     public List<User> getUsersByPattern(String pattern) {
-        String getusersbypattern = "select * from user where fname like ? or lname like ?";
+        String getusersbypattern = "select * from user where fName like ? or lName like ?";
         String formatedPattern = "%" + pattern + "%";
         if (pattern.equals("")) {
             System.out.println("Pattern required");
