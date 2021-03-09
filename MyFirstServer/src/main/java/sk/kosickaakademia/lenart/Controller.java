@@ -2,6 +2,7 @@ package sk.kosickaakademia.lenart;
 
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Date;
@@ -27,6 +28,11 @@ public class Controller {
     @RequestMapping("/hi/test")
     public String getHiTest(){
         return "This is a test.";
+    }
+
+    @RequestMapping(path = "/data", method = RequestMethod.POST)
+    public String getHiTest(@PathVariable String username){
+        return "Hi. How are u doing?";
     }
 
     @RequestMapping("/hi/{username}")
