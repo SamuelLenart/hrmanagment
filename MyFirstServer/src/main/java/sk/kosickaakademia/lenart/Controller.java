@@ -1,9 +1,6 @@
 package sk.kosickaakademia.lenart;
 
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.Date;
 
@@ -31,8 +28,13 @@ public class Controller {
     }
 
     @RequestMapping(path = "/data", method = RequestMethod.POST)
-    public String getHiTest(@PathVariable String username){
-        return "Hi. How are u doing?";
+    public String getHiTest(@RequestBody String text){
+        return "Hi. This is a test page. Your name is: "+text;
+    }
+
+    @RequestMapping(path = "/post", method = RequestMethod.POST)
+    public String getTest(@RequestBody String text){
+        return "Let's go!"+text;
     }
 
     @RequestMapping("/hi/{username}")
