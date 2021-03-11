@@ -22,8 +22,7 @@ public class PresidentController {
     String UKR = "Ukraine, Volodymyr Oleksandrovyc Zelenskyj";
     String FIN = "Finland, Sauli Niinisto";
     String GER = "Germany, Frank-Walter Steinmeier";
-    List list = new ArrayList<>();
-    private Object String;
+    List<String> list = new ArrayList<>();
 
     public PresidentController() {
         list.add(SVK);
@@ -41,12 +40,46 @@ public class PresidentController {
     @GetMapping("list/{president}")
     public ResponseEntity<String> selectPresident(@PathVariable String president){
         JSONObject object = new JSONObject();
+        int result;
+        switch(president) {
+            case "SVK":
+                result = 0;
+                break;
+            case "CZE":
+                result = 1;
+                break;
+            case "USA":
+                result = 2;
+                break;
+            case "FRA":
+                result = 3;
+                break;
+            case "HUN":
+                result = 4;
+                break;
+            case "POL":
+                result = 5;
+                break;
+            case "AUT":
+                result = 6;
+                break;
+            case "UKR":
+                result = 7;
+                break;
+            case "FIN":
+                result = 8;
+                break;
+            case "GER":
+                result = 9;
+                break;
+            default: result = -1;
+        }
         int status;
-        if(String != list.toString()) {
+        if(result == -1) {
             object.put("error","President not found!");
             status = 404;
         }else{
-            object.put("president", list.get(Integer.parseInt(president)));
+            object.put("president", list.get(result));
             status = 200;
         }
         return ResponseEntity.status(200).contentType(MediaType.APPLICATION_JSON).body(object.toJSONString());
