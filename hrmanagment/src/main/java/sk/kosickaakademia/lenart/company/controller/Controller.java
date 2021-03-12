@@ -64,4 +64,5 @@ public class Controller {
         String json = new Util().getJson(list);
         return ResponseEntity.status(200).contentType(MediaType.APPLICATION_JSON).body(json);
     }
+
 }
