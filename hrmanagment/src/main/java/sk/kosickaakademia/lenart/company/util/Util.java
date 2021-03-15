@@ -13,7 +13,7 @@ import java.util.List;
 public class Util {
 
     public String getJson(List<User> list){
-        if(list.isEmpty()) return "{}";
+        if(list == null || list.isEmpty()) return "{}";
         JSONObject object = new JSONObject();
         object.put("datetime",getCurrentDateTime());
         object.put("size",list.size());
@@ -24,7 +24,7 @@ public class Util {
         userJson.put("fName", u.getfName());
         userJson.put("lName", u.getlName());
         userJson.put("age", u.getAge());
-        userJson.put("gender", u.getGender().toString());   // ? overit ?
+        userJson.put("gender", u.getGender().toString());
         jsonArray.add((JsonValue) userJson);
     }
         object.put("users",jsonArray);
