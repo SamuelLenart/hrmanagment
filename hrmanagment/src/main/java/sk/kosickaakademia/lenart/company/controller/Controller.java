@@ -103,4 +103,11 @@ public class Controller {
 
         return ResponseEntity.status(status).contentType(MediaType.APPLICATION_JSON).body("{}");
     }
+
+    @GetMapping("/stats")
+    public ResponseEntity<String> overview(){
+        List<User> list = new Database().getAllUsers();
+        String jsonStatistic = new Util().getStatistic(list);
+        return ResponseEntity.status(200).contentType(MediaType.APPLICATION_JSON).body(jsonStatistic.toString());
+    }
 }

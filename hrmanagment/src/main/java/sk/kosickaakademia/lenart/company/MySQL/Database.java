@@ -1,6 +1,7 @@
 package sk.kosickaakademia.lenart.company.MySQL;
 
 import org.springframework.web.bind.annotation.GetMapping;
+import sk.kosickaakademia.lenart.company.entity.Statistic;
 import sk.kosickaakademia.lenart.company.entity.User;
 import sk.kosickaakademia.lenart.company.enumerator.Gender;
 import sk.kosickaakademia.lenart.company.log.LOG;
@@ -150,5 +151,25 @@ public class Database {
         }
         return null;
     }
-    public boolean changeAge(int )
+    public boolean changeAge(int id, int newAge){
+        if (id < 0 || newAge < 1 || newAge >= 100)
+            return false;
+        try (Connection conn=getConnection()){
+            if (conn != null) {
+                PreparedStatement ps = conn.prepareStatement(changeAge());
+                ps.setInt(1, newAge);
+                ps.setInt(2, id);
+                int update=ps.executeUpdate();
+                log.print("Updated age for id: " + id);
+                return update==1;
+            }
+        } catch (Exception e) {
+            log.error(e.toString());
+        }
+        return false;
+    }
+
+    public Statistic getOverviewData(){
+        return null;
+    }
 }
