@@ -2,7 +2,6 @@ package sk.kosickaakademia.lenart.company.util;
 
 import com.mysql.cj.xdevapi.JsonArray;
 import com.mysql.cj.xdevapi.JsonValue;
-import org.graalvm.compiler.lir.LIRInstruction;
 import org.json.simple.JSONObject;
 import sk.kosickaakademia.lenart.company.entity.User;
 import sk.kosickaakademia.lenart.company.enumerator.Gender;

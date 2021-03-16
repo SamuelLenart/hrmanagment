@@ -1,6 +1,5 @@
 package sk.kosickaakademia.lenart.company.entity;
 
-import org.graalvm.compiler.replacements.StandardGraphBuilderPlugins;
 import sk.kosickaakademia.lenart.company.enumerator.Gender;
 
 public class User {
