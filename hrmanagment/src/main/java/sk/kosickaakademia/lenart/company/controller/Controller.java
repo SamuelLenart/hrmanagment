@@ -13,7 +13,6 @@ import sk.kosickaakademia.lenart.company.entity.User;
 import sk.kosickaakademia.lenart.company.enumerator.Gender;
 import sk.kosickaakademia.lenart.company.util.Util;
 
-import javax.xml.crypto.Data;
 import java.util.List;
 
 
