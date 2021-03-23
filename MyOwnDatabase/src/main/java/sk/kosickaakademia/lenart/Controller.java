@@ -1,7 +1,9 @@
 package sk.kosickaakademia.lenart;
 
+import com.sun.tools.javac.jvm.Gen;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -18,7 +20,7 @@ public class Controller {
 
             String name = (String) object.get("name");
             String genre = (String) object.get("genre");
-            String players = (String) object.get("players");
+            int players = (int) object.get("players");
             if (name == null || name.trim().length() == 0) {
                 log.error("Missing game");
                 JSONObject obj = new JSONObject();
@@ -35,9 +37,11 @@ public class Controller {
                 g = Genre.MOBA;
             } else if(genre.equalsIgnoreCase("RTS")){
                     g = Genre.RTS;
-            } else
+            } else if(genre.equalsIgnoreCase("SPORT"))
+                g = Genre.SPORT;
+            else
                 g = Genre.OTHER;
-            Game game = new Game(name, players, g.getValue());
+            Game game = new Game();
             new Database().insertNewGame(game);
         } catch (Exception e) {
             log.error("Cannot process input data.");
@@ -82,13 +86,13 @@ public class Controller {
     }
     @RequestMapping(value="/game/{id}",method=RequestMethod.DELETE)
     public ResponseEntity<String> deleteGame(@PathVariable int id){
-        if (database.getGameById(id)==null){
+        if (Database.SelectGame(id)==null){
             JSONObject object=new JSONObject();
             object.put("ERROR","Game not found");
             log.error("Game not found");
             return ResponseEntity.status(404).contentType(MediaType.APPLICATION_JSON).body(object.toJSONString());
         }
-        database.deleteGame(id);
+        Database.deleteGame(id);
         log.print("Game deleted");
         return ResponseEntity.status(204).contentType(MediaType.APPLICATION_JSON).body(null);
     }

@@ -12,16 +12,18 @@ public class Game {
     private int id;
     private String name;
     private String genre;
-    private String players;
+    private int date;
+    private int players;
 
-    public Game(int id, String name, String genre, String players){
-        this(name, genre, players);
+    public Game(int id, String name, String genre, int date, int players){
+        this();
         this.id = id;
     }
 
-    public Game(String name, String genre, int players) {
+    public Game() {
         this.name=name;
         this.genre=genre;
+        this.date = date;
         this.players=players;
     }
     public int getId(){
@@ -36,7 +38,11 @@ public class Game {
         return genre;
     }
 
-    public String getPlayers(){
+    public int getDate(){
+        return date;
+    }
+
+    public int getPlayers(){
         return players;
     }
 
@@ -52,6 +58,7 @@ public class Game {
             userJson.put("id", u.getId());
             userJson.put("game", u.getName());
             userJson.put("genre", u.getGenre());
+            userJson.put("date", u.getDate());
             userJson.put("players", u.getPlayers());
             jsonArray.add(userJson);
         }
