@@ -10,9 +10,9 @@ import sk.kosickaakademia.lenart.company.util.Util;
 @SpringBootApplication
 public class App 
 {
-    public static void main( String[] args )
+    public static void main(String[] args)
     {
-        Database database=new Database();
-        SpringApplication.run((App.class));
+        System.out.println(args[0]);
+        SpringApplication.run(App.class,args);
     }
 }
