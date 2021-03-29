@@ -1,5 +1,7 @@
 package sk.kosickaakademia.lenart;
 
+import sk.kosickaakademia.lenart.Log;
+
 import java.io.InputStream;
 import java.sql.*;
 import java.util.ArrayList;
@@ -7,26 +9,38 @@ import java.util.List;
 import java.util.Properties;
 
 public class Database {
-    static Log log = new Log();
-    private final String query="INSERT INTO games (id, name, genre, players) VALUES ( ?, ?, ?, ?)";
-    private final String INSERTQUERY = "INSERT INTO games (id, name, genre, players)" +
+    Log log = new Log();
+    private final String query="INSERT INTO games (name, genre, date, players) VALUES (?, ?, ?, ?)";
+    private final String INSERTQUERY = "INSERT INTO games (name, genre, date, players)" +
             "VALUES (?, ?, ?, ?)";
-    private final String insertNewGame = "INSERT INTO games (id, name, genre, players) VALUES(?, ?, ?)";
+    private final String insertNewGame = "INSERT INTO games (name, genre, date, players) VALUES(?, ?, ?, ?)";
     private final String allGames="SELECT * FROM games";
-    private final String changeGame="UPDATE games SET GameName = ? WHERE id = ?";
-    private static final String SelectGame="SELECT * FROM games WHERE id = ?";
-    private static final String deleteGame="DELETE FROM games WHERE id = ?";
-    public static Connection getConnection(){
+    private final String changeGame="UPDATE games SET name = ? WHERE id = ?";
+    private final String SelectGame="SELECT * FROM games WHERE id = ?";
+    private final String deleteGame="DELETE FROM games WHERE id = ?";
+    public Connection getConnection(){
         try {
             Properties props = new Properties();
-            InputStream loader = Database.class.getClassLoader().getResourceAsStream("database.properties");
+            InputStream loader = getClass().getClassLoader().getResourceAsStream("database.properties");
             props.load(loader);
             Class.forName("com.mysql.cj.jdbc.Driver");
-            String url = props.getProperty("url");
+            /*String url = props.getProperty("url");
             String username=props.getProperty("username");
-            String password=props.getProperty("password");
-            Connection con = DriverManager.getConnection(url, username, password);
-            log.print("Connection successful");
+            String password=props.getProperty("password");*/
+            String url = "jdbc:mysql://localhost:3306/gamedata";
+            String username = "root";
+            String password = "";
+            Connection con = null;
+            try {
+                con = DriverManager.getConnection(url, username, password);
+            }
+            catch (SQLException e)
+            {
+                System.out.println(e);
+            }
+            if (con!=null){
+                log.print("Connection successful");
+            }
             return con;
         } catch (Exception exception) {
             log.error(exception.toString());
@@ -49,8 +63,9 @@ public class Database {
             try{
                 PreparedStatement ps=conn.prepareStatement(insertNewGame);
                 ps.setString(1, game.getName());
-                ps.setString(2,game.getGenre());
-                ps.setInt(3, game.getPlayers());
+                ps.setString(2, game.getGenre());
+                ps.setInt(3,game.getDate());
+                ps.setInt(4, game.getPlayers());
                 int result=ps.executeUpdate();
                 closeConnection(conn);
                 log.print("New Game was added to Database.");
@@ -61,7 +76,7 @@ public class Database {
         }
         return false;
     }
-    private static List<Game> executeSelect(PreparedStatement ps) {
+    private List<Game> executeSelect(PreparedStatement ps) {
         List<Game> userList=new ArrayList<>();
         int result = 0;
         try{
@@ -70,14 +85,14 @@ public class Database {
                 while(rs.next()) {
                     result++;
                     int id=rs.getInt("id");
-                    String game=rs.getString("game");
-                    String genre=rs.getString("genre");
+                    String name=rs.getString("name");
+                    String genre= rs.getString("genre");
                     int date = rs.getInt("date");
                     int players= rs.getInt("players");
-                    userList.add(new Game(id,game,genre,date,players));
-                    System.out.println("I've found: "+result);
-                    System.out.println(id+" "+game+" "+genre+" "+players);
+                    userList.add(new Game(id,name,genre,date,players));
+                    System.out.println(id+" "+name+" "+genre+" "+date+" "+players);
                 }
+                return userList;
             }else{
                 System.out.println("No games found.");
                 return null;
@@ -95,7 +110,8 @@ public class Database {
     public List<Game> showAllGames(){
         try (Connection connection = getConnection()) {
             if (connection != null) {
-                PreparedStatement ps = connection.prepareStatement(String.valueOf(showAllGames()));
+                PreparedStatement ps = connection.prepareStatement(allGames);
+                System.out.println("success");
                 return executeSelect(ps);
             }
         }catch(Exception ex) {
@@ -119,18 +135,18 @@ public class Database {
         }
         return false;
     }
-    public static Game SelectGame(int id){
+    public List<Game> SelectGame(int id){
         try (Connection connection = getConnection()) {
             if (connection != null) {
                 PreparedStatement ps = connection.prepareStatement(SelectGame);
                 ps.setInt(1, id);
-                return (Game) executeSelect(ps);
+                return executeSelect(ps);
             }
         }catch(Exception ex) {
         }
         return null;
     }
-    public static boolean deleteGame(int id){
+    public boolean deleteGame(int id){
         if (SelectGame(id) == null){
             log.error("No game found");
             return false;

@@ -2,7 +2,7 @@ package sk.kosickaakademia.lenart;
 
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
-
+import java.util.*;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -15,17 +15,15 @@ public class Game {
     private int date;
     private int players;
 
-    public Game(int id, String name, String genre, int date, int players){
-        this();
+    public Game (int id, String name, String genre, int date, int players){
+        this.players = players;
+        this.date = date;
+        this.genre = genre;
+        this.name = name;
         this.id = id;
     }
 
-    public Game() {
-        this.name=name;
-        this.genre=genre;
-        this.date = date;
-        this.players=players;
-    }
+
     public int getId(){
         return id;
     }
@@ -46,9 +44,16 @@ public class Game {
         return players;
     }
 
+    public Game() {
+        this.name = name;
+        this.genre = genre;
+        this.date = date;
+        this.players = players;
+        this.id = id;
+
+    }
     public String getJSON(List<Game> list) {
-        if (list.isEmpty())
-            return "{}";
+        if (list.isEmpty()) return "{}";
         JSONObject object = new JSONObject();
         object.put("datetime", LocalDate());
         object.put("size", list.size());
@@ -70,7 +75,6 @@ public class Game {
         DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
         Date date = new Date();
         System.out.println(dateFormat.format(date));
-        return null;
+        return dateFormat.format(date);
     }
-
 }

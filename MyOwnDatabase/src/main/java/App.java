@@ -1,6 +1,7 @@
+package sk.kosickaakademia.lenart;
+
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import sk.kosickaakademia.lenart.Database;
 
 /**
  * Hello world!
