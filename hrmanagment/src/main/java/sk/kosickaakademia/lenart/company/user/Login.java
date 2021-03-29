@@ -8,6 +8,7 @@ import java.util.Scanner;
 public class Login {
     private Map<String, Date> blocked;
     private Map<String, Integer> attempt;
+    private final String PASSWORD = "Samo";
 
     public Login() {
         blocked = new HashMap<>();
@@ -16,7 +17,6 @@ public class Login {
 
     public String loginUser(String username, String password) {
         for (int passAttempts = 0; passAttempts < 3; passAttempts++) {
-            System.out.print("Enter Your Password: ");
             Scanner input = new Scanner(System.in);
             String inputPass = input.nextLine();
 
