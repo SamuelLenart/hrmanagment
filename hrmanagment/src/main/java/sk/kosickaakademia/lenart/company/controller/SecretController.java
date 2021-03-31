@@ -82,26 +82,15 @@ public class SecretController {
         return ResponseEntity.status(status).contentType(MediaType.APPLICATION_JSON).body("");
     }
 
-    @PostMapping("/car")
-    public ResponseEntity<String> showCar(@RequestBody String auth) throws ParseException {
-        try {
-            JSONObject object = (JSONObject) new JSONParser().parse(auth);
-            String CarBrand = (String) object.get("CarBrand");
-            String SPZ = (String) object.get("SPZ");
-            String CarColor = (String) object.get("CarColor");
-            if (CarBrand == null || SPZ == null || SPZ.trim().length() == 0 || CarBrand.trim().length() == 0 || CarColor == null || CarColor.trim().length() == 0) {
-                log.error("Missing brand or SPZ.");
-                JSONObject obj = new JSONObject();
-                obj.put("error", "missing SPZ or brand.");
-                return ResponseEntity.status(400).contentType(MediaType.APPLICATION_JSON).
-                        body(obj.toJSONString());
+    @PostMapping("/student")
+    public ResponseEntity<String> student(@RequestHeader("token") String token){
+        String login = "";
+        for(Map.Entry<String, String> entry : map.entrySet()) {
+            if(entry.getValue().equals(token)){
+                login = entry.getKey();
+                return ResponseEntity.status(200).contentType(MediaType.APPLICATION_JSON).body("Student of Kosicka Academy, name: " + login);
             }
-                JSONObject obj = new JSONObject();
-                return ResponseEntity.status(400).contentType(MediaType.APPLICATION_JSON).
-                        body(object.toJSONString());
-        } catch (ParseException e) {
-            e.printStackTrace();
         }
-        return null;
+        return ResponseEntity.status(200).contentType(MediaType.APPLICATION_JSON).body("You are only a host user which is not a student");
     }
 }

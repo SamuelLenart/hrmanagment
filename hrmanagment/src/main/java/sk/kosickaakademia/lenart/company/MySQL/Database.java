@@ -58,14 +58,14 @@ public class Database {
     public boolean insertNewUser(User user){
         if(user==null)
             return false;
-        String fname = new Util().normalizeName(user.getfName());
-        String lname = new Util().normalizeName(user.getlName());
+        String fName = new Util().normalizeName(user.getfName());
+        String lName = new Util().normalizeName(user.getlName());
         Connection con = getConnection();
         if(con!=null){
             try{
                 PreparedStatement ps = con.prepareStatement(INSERTQUERY);
-                ps.setString(1,fname);
-                ps.setString(2,lname);
+                ps.setString(1,fName);
+                ps.setString(2,lName);
                 ps.setInt(3,user.getAge());
                 int result = ps.executeUpdate();
                 closeConnection(con);
@@ -83,12 +83,12 @@ public class Database {
         int count = 0;
         while(rs.next()){
             count ++;
-            String fname = rs.getString("fname");
-            String lname = rs.getString("lname");
+            String fName = rs.getString("fname");
+            String lName = rs.getString("lname");
             int age = rs.getInt("age");
             int id = rs.getInt("id");
             int gender = rs.getInt("gender");
-            User u=new User(id,fname,lname,age,gender);
+            User u=new User(id,fName,lName,age,gender);
             list.add(u);
         }
         log.info("Number of records: "+ count);
@@ -118,17 +118,30 @@ public class Database {
         return null;
     }
     public List<User> getUsersByAge(int from, int to){
-
-        if(to<from)
+        if(to<from){
             return null;
+        }
+        List<User> list = new ArrayList<>();
+        String sql = "SELECT * FROM user WHERE age >= ? AND age <= ? ORDER BY age";
+        Connection con = getConnection();
         try {
-            String sql = "SELECT * FROM user WHERE age >= ? AND age <= ?";
-            PreparedStatement ps = getConnection().prepareStatement(sql);
-            ps.setInt(1,from);
+            PreparedStatement ps = con.prepareStatement(sql);
+            ps.setInt(1, from);
             ps.setInt(2, to);
-            return executeSelect(ps);
-        }catch(Exception ex){
-            log.error(ex.toString());
+            ResultSet rs = ps.executeQuery();
+            while(rs.next()){
+                String fName = rs.getString("fname");
+                String lName = rs.getString("lname");
+                int age = rs.getInt("age");
+                int id = rs.getInt("id");
+                int gender = rs.getInt("gender");
+                User user = new User(id, fName, lName, age, gender);
+                list.add(user);
+            }
+            closeConnection(con);
+            return list;
+        }catch (Exception e){
+            log.error(e.toString());
         }
         return null;
     }
@@ -144,18 +157,25 @@ public class Database {
         return null;
 
     }
-    public User getUserById(int id){
-        String sql = "SELECT * FROM user WHERE id = ?";
+    public User getUserByID(int id){
+        String sql = "SELECT * FROM user WHERE id LIKE ?";
+        Connection con = getConnection();
         try {
-            PreparedStatement ps = getConnection().prepareStatement(sql);
-            ps.setInt(1,id);
-            List<User> list = executeSelect(ps);
-            if(list.isEmpty())
-                return null;
-            else
-                list.get(0);
-        }catch(Exception ex){
-            log.error(ex.toString());
+            PreparedStatement ps = con.prepareStatement(sql);
+            ps.setInt(1, id);
+            ResultSet rs = ps.executeQuery();
+            if(rs.next()){
+                String fName = rs.getString("fname");
+                String lName = rs.getString("lname");
+                int age = rs.getInt("age");
+                int idecko = rs.getInt("id");
+                int gender = rs.getInt("gender");
+                User user = new User(idecko, fName, lName, age, gender);
+                closeConnection(con);
+                return user;
+            }
+        }catch (Exception e){
+            log.error(e.toString());
         }
         return null;
     }
@@ -177,7 +197,32 @@ public class Database {
         return false;
     }
 
-    public Statistic getOverviewData(){
+    public List<User> getUser(String pattern){
+        List<User> list = new ArrayList<>();
+        String sql = "SELECT * FROM user WHERE fname like ? OR lname like ?";
+
+        Connection con = getConnection();
+        try {
+            PreparedStatement ps = con.prepareStatement(sql);
+            ps.setString(1,"%" + pattern + "%");
+            ps.setString(2,"%" + pattern + "%");
+            System.out.println(ps);
+            ResultSet rs = ps.executeQuery();
+            while(rs.next()){
+                String fName = rs.getString("fname");
+                String lName = rs.getString("lname");
+                int age = rs.getInt("age");
+                int idecko = rs.getInt("id");
+                int gender = rs.getInt("gender");
+                User user = new User(idecko, fName, lName, age, gender);
+                list.add(user);
+            }
+            closeConnection(con);
+            return list;
+        }catch (Exception e){
+            log.error(e.toString());
+        }
         return null;
     }
+
 }
